@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Savannah River Conditions</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<link rel="stylesheet" href="css/style.css?v=20261119a">
+</head>
+<body>
+<header class="top">
+  <div class="brand">
+    <a class="logo" href="https://secoora.org" title="SECOORA: Southeast Coastal Ocean Observing Regional Association"><img src="img/secoora-logo.svg" alt="SECOORA"></a>
+    <div>
+      <h1>Savannah River Conditions</h1>
+      <p class="sub">Draft for Savannah Pilots review. Not for navigation.</p>
+    </div>
+  </div>
+  <div class="top-right">
+    <div id="unitseg" class="seg" role="group" aria-label="Units">
+      <button type="button" data-units="english" class="on">ft · kt</button>
+      <button type="button" data-units="metric">m · m/s</button>
+    </div>
+    <a href="sources.html" class="small">Data sources</a>
+    <span id="updated" class="muted"><span class="spin"></span>Loading…</span>
+    <button id="refresh" type="button">Refresh</button>
+  </div>
+</header>
+
+<div id="err" class="err" hidden></div>
+<section id="alerts" class="alerts" aria-live="polite"></section>
+
+<section class="timebar" aria-label="Time shown">
+  <div id="modeseg" class="seg" role="group" aria-label="View">
+    <button type="button" data-mode="time" class="on">One time</button>
+    <button type="button" data-mode="transit">Transit</button>
+  </div>
+  <button id="nowbtn" type="button">Now</button>
+  <input id="tslider" type="range" min="0" max="2160" step="15" value="0" aria-label="Hours ahead of now">
+  <output id="tlabel" for="tslider"></output>
+  <span id="anomaly" class="anomaly"></span>
+  <div id="trline" class="trline" hidden>
+    <span>Transit from</span>
+    <span class="trplace"><select id="trfrom" aria-label="Transit from"></select>
+      <span class="tror">or <button type="button" class="pick" data-end="from" title="Choose the starting place on the map">map select</button></span></span>
+    <span>departing</span>
+    <select id="trdep" aria-label="Departure time"></select>
+    <span>arriving at</span>
+    <span class="trplace"><select id="trto" aria-label="Transit to"></select>
+      <span class="tror">or <button type="button" class="pick" data-end="to" title="Choose the destination on the map">map select</button></span></span>
+    <span>at</span>
+    <select id="trfix" aria-label="Set the speed or the arrival time"><option value="speed">speed</option><option value="time">time</option></select>
+    <label id="trspdbox"><input id="spd" type="number" min="2" max="25" step="0.5" value="10" aria-label="Speed in knots"> kt</label>
+    <select id="trarr" aria-label="Arrival time" hidden></select>
+    <span id="trout" class="trout"></span>
+    <span id="trhint" class="trhint" hidden>Click a place on the route or the orange channel line on the map.</span>
+  </div>
+</section>
+
+<main class="grid">
+  <section class="panel map-panel">
+    <div id="trbanner" class="trbanner" hidden></div>
+    <div id="map" aria-label="Map of stations"></div>
+    <p class="muted small">Tap a place on the map or in the list to open or close its charts. In Transit, the "map select" buttons let you pick the start or destination here. Diamonds are NOAA tidal current prediction points; the small light green circle is the Talmadge Bridge air gap; the orange line is the experimental channel forecast.</p>
+  </section>
+
+  <section class="panel">
+    <div class="listhead">
+      <h2>Sea to upriver <span id="trbadge" class="trbadge" hidden>Transit mode</span></h2>
+      <button id="showall" type="button" hidden>Show minimized locations</button>
+    </div>
+    <div id="cards" class="cards"><div class="loading" role="status"><span class="spin"></span>Loading live data from USGS, NOAA and the National Weather Service…</div></div>
+    <section class="chan" id="chan" hidden>
+      <div id="chanfull">
+        <div class="listhead">
+          <h2>Channel forecast between gauges</h2>
+          <span id="chanmeta" class="muted small"></span>
+        </div>
+        <div class="chanbar">
+          <label for="chankm">Place</label>
+          <span class="muted small">sea</span>
+          <input id="chankm" type="range" min="0" max="1" step="1" value="0" aria-label="Place along the channel, sea to Port Wentworth">
+          <span class="muted small">Port Wentworth</span>
+        </div>
+        <div id="chancard" class="cards"></div>
+      </div>
+      <div id="chanmin" class="card min" role="button" tabindex="0" aria-label="Show the channel forecast" hidden>
+        <span class="cname">Channel forecast between gauges</span><span class="minhint">＋ show</span>
+      </div>
+    </section>
+    <details id="settings">
+      <summary>Caution and alert limits</summary>
+      <form id="thform" class="thform"></form>
+      <p class="muted small">Leave a box empty to switch that limit off. Saved in this browser only.</p>
+    </details>
+    <p class="small"><a href="sources.html">Data sources and methods: what each sensor and prediction is</a></p>
+    <p class="muted small">
+      Sources: USGS Water Services, NOAA CO-OPS, NOAA NDBC via IOOS, National Weather Service. Data are provisional.
+      USGS velocities are cross-section means, not the surface current in the channel.
+      Water levels are in MLLW (chart datum, 1983–2001 epoch). Fort Pulaski is NOAA's published datum; Elba Island, Savannah, Garden City and Port Wentworth use offsets computed for this page from each gauge's record with NOAA's Tidal Analysis Datum Calculator, and are not official NOAA datums. I-95 is in NAVD88.
+      Future times show the experimental forecast of water level and current at the gauges (marked "forecast", with its 95% range), tide and tidal current predictions where there is no forecast (marked "predicted"), and the NWS wind forecast; transit distances are approximate.
+      Tide predictions at the USGS gauges, and the section-mean current predictions at Fort Pulaski, Savannah and Port Wentworth, are harmonic predictions computed for this page from each gauge's 2021–2026 record; they are not official NOAA predictions and do not include changes in river flow or weather.
+    </p>
+  </section>
+</main>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="js/stations.js?v=20261119a"></script>
+<script src="js/config.js?v=20261119a"></script>
+<script src="js/tides.js?v=20261119a"></script>
+<script src="js/chart.js?v=20261119a"></script>
+<script src="js/channel.js?v=20261119a"></script>
+<script src="js/app.js?v=20261119a"></script>
+</body>
+</html>

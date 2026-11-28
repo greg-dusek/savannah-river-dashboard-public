@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Savannah River Conditions: data sources</title>
+<link rel="stylesheet" href="css/style.css?v=20261119a">
+<style>
+  .doc { max-width: 1100px; margin: 0 auto; padding: 12px 16px 40px; display: flex; flex-direction: column; gap: 12px; }
+  .doc p { margin: 0 0 8px; max-width: 95ch; }
+  .doc .panel > p:last-child { margin-bottom: 0; }
+  .doc h2 { margin-bottom: 6px; }
+  .doc h3 { margin-top: 14px; }
+  .doc ul.kinds { margin: 0 0 8px; padding-left: 20px; max-width: 95ch; }
+  .doc ul.kinds li { margin-bottom: 4px; }
+  .scroll { overflow-x: auto; }
+  .doc table { width: 100%; font-size: 13px; margin: 6px 0 10px; }
+  .doc th, .doc td { vertical-align: top; padding: 5px 12px 5px 0; }
+  .doc td:first-child { font-weight: 600; white-space: nowrap; }
+  .doc td.wrap { white-space: normal; min-width: 22ch; }
+  .doc a { color: var(--accent); }
+  .toc { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 13px; }
+  .tag { display: inline-block; padding: 0 6px; border: 1px solid var(--border); border-radius: 10px; font-size: 11.5px; color: var(--text-secondary); white-space: nowrap; }
+  .tag.own { border-color: var(--series-2); color: var(--series-2); }
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="brand">
+    <a class="logo" href="https://secoora.org" title="SECOORA: Southeast Coastal Ocean Observing Regional Association"><img src="img/secoora-logo.svg" alt="SECOORA"></a>
+    <div>
+    <h1>Data sources and methods</h1>
+    <p class="sub">What each number on the Savannah River Conditions page is, who measures or predicts it, and how. Draft for Savannah Pilots review. Not for navigation.</p>
+    </div>
+  </div>
+  <div class="top-right"><a href="index.html">Back to the dashboard</a></div>
+</header>
+
+<main class="doc">
+
+<section class="panel">
+  <h2>How to read this page</h2>
+  <p>This dashboard has three kinds of information:</p>
+  <ul class="kinds">
+    <li><b>Observations</b> are measured by a sensor in the last few minutes.</li>
+    <li><b>Official predictions</b> are published by NOAA or the National Weather Service.</li>
+    <li><b>Predictions computed for this page</b> <span class="tag own">computed here</span> are calculated from federal data for this project. They are experimental and are not official NOAA or USGS products.</li>
+  </ul>
+  <p>All federal data are public and provisional. Times on the dashboard are Eastern Time. Current is shown with flood (upriver) positive and ebb negative.</p>
+  <nav class="toc">
+    <a href="#obs">Observations</a>
+    <a href="#usgsvel">How USGS measures current</a>
+    <a href="#noaapred">Official predictions</a>
+    <a href="#ownpred">Predictions computed here</a>
+    <a href="#datums">Water level datums</a>
+    <a href="#channel">Channel forecast</a>
+    <a href="#limits">Known limits</a>
+  </nav>
+</section>
+
+<section class="panel" id="obs">
+  <h2>Observations</h2>
+  <p>Listed from sea to upriver. "Since" is the start of the available real-time record (if known).</p>
+  <div class="scroll">
+  <table>
+    <thead><tr><th>Place</th><th>Station</th><th>What is measured</th><th>Reported</th><th>Since</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td>Grays Reef buoy</td><td><a href="https://www.ndbc.noaa.gov/station_page.php?station=41008">NOAA NDBC 41008</a><br><span class="muted">31.400 N, 80.866 W</span></td>
+        <td class="wrap">Wind speed, gust and direction; significant wave height; dominant wave period</td><td>Hourly or better</td><td></td>
+        <td class="wrap">Moored buoy 40 nm southeast of Savannah. Read through the IOOS sensor data server, which has run several hours behind real time.</td></tr>
+      <tr><td>Fort Pulaski</td><td><a href="https://tidesandcurrents.noaa.gov/stationhome.html?id=8670870">NOAA CO-OPS 8670870</a><br><span class="muted">32.0347 N, 80.9030 W</span></td>
+        <td class="wrap">Water level (acoustic sensor); wind speed, gust and direction</td><td>Every 6 minutes</td><td>1935</td>
+        <td class="wrap">NOAA's long-term tide station and the reference for all water levels on the dashboard. Water level is in feet above MLLW, NOAA's published datum. The wind sensor is about 28 ft above the site.</td></tr>
+      <tr><td>Fort Pulaski</td><td><a href="https://waterdata.usgs.gov/monitoring-location/02198980/">USGS 02198980</a><br><span class="muted">32.0358 N, 80.9061 W</span></td>
+        <td class="wrap">Cross-section mean velocity (shown as "current")</td><td>Every 15 minutes</td><td>June 2009</td>
+        <td class="wrap">See "How USGS measures current" below.</td></tr>
+      <tr><td>Elba Island</td><td><a href="https://waterdata.usgs.gov/monitoring-location/0219897993/">USGS 0219897993</a><br><span class="muted">32.1031 N, 81.0069 W</span></td>
+        <td class="wrap">Water level (gauge height); wind speed and direction</td><td>Every 15 minutes</td><td>Level August 2013; wind July 2026</td>
+        <td class="wrap">No current meter here. Gauge height is shifted to MLLW with an offset computed for this page (see datums).</td></tr>
+      <tr><td>Savannah, USACE Dock</td><td><a href="https://waterdata.usgs.gov/monitoring-location/021989773/">USGS 021989773</a><br><span class="muted">32.0804 N, 81.0814 W</span></td>
+        <td class="wrap">Water level; cross-section mean velocity; wind speed and direction</td><td>Every 15 minutes</td><td>Level and velocity October 2007; wind July 2026</td>
+        <td class="wrap">Level shifted to MLLW with an offset computed for this page.</td></tr>
+      <tr><td>Talmadge Bridge</td><td><a href="https://tidesandcurrents.noaa.gov/stationhome.html?id=8670674">NOAA CO-OPS 8670674</a><br><span class="muted">32.0883 N, 81.0990 W</span></td>
+        <td class="wrap">Air gap: the clearance between the water surface and the sensor on the bridge</td><td>Every 6 minutes</td><td>April 2016</td>
+        <td class="wrap">Part of NOAA PORTS. Shown on the Savannah row.</td></tr>
+      <tr><td>Garden City</td><td><a href="https://waterdata.usgs.gov/monitoring-location/021989715/">USGS 021989715</a><br><span class="muted">32.1161 N, 81.1283 W</span></td>
+        <td class="wrap">Water level</td><td>Every 15 minutes</td><td>November 2013</td>
+        <td class="wrap">Level shifted to MLLW with an offset computed for this page.</td></tr>
+      <tr><td>Port Wentworth (GA 25)</td><td><a href="https://waterdata.usgs.gov/monitoring-location/02198920/">USGS 02198920</a><br><span class="muted">32.1653 N, 81.1549 W</span></td>
+        <td class="wrap">Water level; cross-section mean velocity</td><td>Every 15 minutes</td><td>Level October 2008; velocity March 2009</td>
+        <td class="wrap">At the Houlihan Bridge. Level shifted to MLLW with an offset computed for this page.</td></tr>
+      <tr><td>I-95 bridge</td><td><a href="https://waterdata.usgs.gov/monitoring-location/02198840/">USGS 02198840</a><br><span class="muted">32.2355 N, 81.1511 W</span></td>
+        <td class="wrap">Water level; cross-section mean velocity</td><td>Every 15 minutes</td><td>Level October 2007; velocity January 2014</td>
+        <td class="wrap">Level is in feet above NAVD88, not MLLW: the tide here is too mixed with river stage for a reliable tidal datum.</td></tr>
+      <tr><td>Clyo</td><td><a href="https://waterdata.usgs.gov/monitoring-location/02198500/">USGS 02198500</a><br><span class="muted">32.5286 N, 81.2683 W</span></td>
+        <td class="wrap">River discharge (freshwater flow) and stage</td><td>Every 15 minutes</td><td>October 1985</td>
+        <td class="wrap">Non-tidal, 61 river miles up. High flow strengthens the ebb and weakens the flood downstream. Also an input to the channel forecast.</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p class="muted small">The dashboard reloads every 5 minutes. Under each observed value is the age of that reading, counted from the reading's own time stamp; USGS readings usually reach the public feed 15 to 60 minutes after they are taken. An observation older than 90 minutes is shown as stale. "Rising" and "falling" beside a water level are based on the tide prediction, and "steady" means within 20 minutes of predicted high or low water.</p>
+</section>
+
+<section class="panel" id="usgsvel">
+  <h2>How USGS measures current</h2>
+  <p>The USGS "current" on the dashboard uses the index-velocity method, the standard for tidal rivers:</p>
+  <p>1. A fixed acoustic Doppler meter on a pier or piling measures water speed in part of the channel every few minutes.<br>
+     2. Boat surveys with a current profiler measure the whole cross-section over full tidal cycles. A rating relates the fixed meter's reading to the true mean velocity of the section.<br>
+     3. Water level gives the area of the cross-section from a survey of the channel shape.<br>
+     4. Discharge is the mean velocity times the area.</p>
+  <p>The dashboard shows the result of step 2 (USGS parameter 72255, "mean water velocity for discharge computation"). USGS reports downstream flow as positive; the dashboard reverses the sign so flood is positive.</p>
+  <p><b>What this means for marine navigation.</b> It is the average over the whole section, bank to bank and surface to bed. It runs weaker than the current in mid-channel, and slack in the channel can come at a slightly different time. Treat it as a reliable sign of the direction and strength of the general current in the reach.</p>
+  <p class="muted small">Method reference: Levesque and Oberg, 2012, Computing discharge using the index velocity method, USGS Techniques and Methods 3-A23.</p>
+</section>
+
+<section class="panel" id="noaapred">
+  <h2>Official predictions</h2>
+
+  <h3>NOAA tide predictions, Fort Pulaski (8670870)</h3>
+  <p>NOAA's harmonic tide prediction in feet above MLLW. It is the astronomical tide only: no wind, pressure or river flow. NOAA's predictions are set to the 1983–2001 mean sea level, and sea level has risen since, so observed water in Savannah now runs about 0.6 ft above the prediction on an ordinary day.</p>
+
+  <h3>NOAA tidal current predictions</h3>
+  <p>NOAA measured currents with bottom-mounted profilers for a month or more at each point, analyzed the tide in the record, and publishes predictions from it. There is no meter at these points today. The predictions are for one depth at one spot in the channel and do not include river flow or wind. These are indicated by diamonds on the map.</p>
+  <div class="scroll">
+  <table>
+    <thead><tr><th>Point</th><th>NOAA station</th><th>Depth shown</th><th>Measured</th><th>Instrument</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td>Tybee approach, 5 nm E</td><td><a href="https://tidesandcurrents.noaa.gov/noaacurrents/predictions.html?id=SAV2302_4">SAV2302</a></td><td>23 ft (6.9 m)</td><td>30 May – 12 July 2023</td><td>Nortek profiler near the surface, looking down</td><td class="wrap">Water depth 42 ft. Flood direction 300°.</td></tr>
+      <tr><td>Fort Pulaski</td><td><a href="https://tidesandcurrents.noaa.gov/noaacurrents/predictions.html?id=SAV2306_10">SAV2306</a></td><td>13 ft (4.0 m)</td><td>29 May – 20 July 2023</td><td>RDI profiler on the bottom</td><td class="wrap">Water depth 51 ft. Flood direction 280°.</td></tr>
+      <tr><td>Elba Island, N of (LNG)</td><td><a href="https://tidesandcurrents.noaa.gov/noaacurrents/predictions.html?id=SAV2311_7">SAV2311</a></td><td>16 ft (4.9 m)</td><td>23 May – 18 July 2023</td><td>RDI profiler on the bottom</td><td class="wrap">Water depth 42 ft. Flood direction 280°. This is the only current information at Elba Island.</td></tr>
+      <tr><td>Talmadge Bridge, 0.25 nm S</td><td><a href="https://tidesandcurrents.noaa.gov/noaacurrents/predictions.html?id=SAV2315_7">SAV2315</a></td><td>17 ft (5.1 m)</td><td>24 May – 11 July 2023</td><td>RDI profiler on the bottom</td><td class="wrap">Water depth 47 ft. Flood direction 319°.</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3>National Weather Service wind forecast and alerts</h3>
+  <p>Hourly forecast wind from the NWS Charleston office grid, one cell for the river and one for the entrance. Where the forecast gives a range, the dashboard uses the upper figure. Active NWS alerts are read for two points, one on the river and one at the entrance.</p>
+
+  <h3>National Weather Service wave forecast (NWPS)</h3>
+  <p>Forecast waves at the Grays Reef buoy and the Tybee approach come from the Nearshore Wave Prediction System, the wave model the NWS Charleston office runs for its coastal waters on a grid of about 1 nm. The dashboard reads significant wave height, peak period and the direction the waves come from at the grid cell nearest each place, hourly to four days ahead. New runs come about every six hours. At the buoy the forecast is drawn beside the observed wave height; at the Tybee approach only the forecast is provided, since there is no wave sensor.</p>
+
+  <h3>Map</h3>
+  <p>The chart layer is NOAA's electronic navigational chart display service. The street map is OpenStreetMap and the minimal gray map is Esri's light gray canvas. None is for navigation in this form.</p>
+</section>
+
+<section class="panel" id="ownpred">
+  <h2>Predictions computed for this page <span class="tag own">computed here</span></h2>
+
+  <h3>Tide predictions at the USGS gauges</h3>
+  <p>NOAA publishes no tide predictions at the USGS gauges, so they are computed here by harmonic analysis of each gauge's 15-minute record. They are the astronomical tide only and, like NOAA's, are set to the 1983–2001 mean level, so observed water runs about 0.6 ft above them.</p>
+  <div class="scroll"><table id="tidefit">
+    <thead><tr><th>Gauge</th><th>Record used</th><th>Tidal constituents</th><th>High/low water time error</th><th>High/low water height error</th></tr></thead>
+    <tbody></tbody>
+  </table></div>
+  <p class="muted small">Errors are root-mean-square, from a test in which October 2025 – September 2026 was left out of the fit and then predicted. The height error is mostly weather and river flow, which no tide table includes.</p>
+
+  <h3>Section-mean current predictions at the USGS velocity gauges</h3>
+  <p>The same harmonic method applied to the USGS cross-section mean velocity. These let the dashboard show a current for future times at the three gauges that measure it. They do not include changes in river flow or weather.</p>
+  <p>At these gauges the dashboard shows this prediction, not NOAA's, beside the observed current, because it predicts the same thing the gauge measures. NOAA's nearest channel predictions are for one depth at a different spot and are listed as their own rows. From January to October 2026 the section-mean prediction differed from the observed current by 0.31 kt at Fort Pulaski and 0.27 kt at USACE Dock; NOAA's channel predictions differed by 0.55 and 0.42 kt, and at the Talmadge Bridge point the predicted current is about 40% weaker than the section mean at the dock.</p>
+  <div class="scroll"><table id="curfit">
+    <thead><tr><th>Gauge</th><th>Record used</th><th>Tidal constituents</th><th>Typical error</th><th>Slack time error</th></tr></thead>
+    <tbody></tbody>
+  </table></div>
+  <p class="muted small">Same hold-out test as above.</p>
+</section>
+
+<section class="panel" id="datums">
+  <h2>Water level datums</h2>
+  <p>Water levels are shown in feet above MLLW (mean lower low water, chart datum) for the 1983–2001 tidal epoch, so they can be compared with charted depths.</p>
+  <p>Fort Pulaski uses NOAA's published datum. The USGS gauges report gauge height on their own gauge datum (at or within half a foot of NAVD88), and USGS publishes no tidal datums for them, so the offset to MLLW at each was computed for this page <span class="tag own">computed here</span> with NOAA's Tidal Analysis Datum Calculator (version 2.4.3), using Fort Pulaski as the control station. These are not official NOAA datums.</p>
+  <div class="scroll"><table id="datumtab">
+    <thead><tr><th>Gauge</th><th>Datum shown</th><th>Added to the USGS reading</th><th>Basis</th></tr></thead>
+    <tbody></tbody>
+  </table></div>
+  <p class="muted small">Between gauges, the channel forecast uses an offset interpolated along the channel.</p>
+</section>
+
+<section class="panel" id="channel">
+  <h2>Channel forecast between gauges <span class="tag own">computed here</span></h2>
+  <p id="chanrun" class="muted small"></p>
+  <p>An experimental forecast of water level and current every 500 m along the ship channel, from the sea entrance to Port Wentworth, from 24 hours back to about 2.5 days after NOAA's model run. NOAA runs the model once a day (the 12:00 UTC run, posted mid-afternoon Eastern time), so the forecast reaches 1.5 to 2.5 days ahead depending on the time of day; the current forecast ends about six hours before the water level forecast. The correction from the live gauges is refreshed every hour, on the hour. At the five water level gauges and the three USGS velocity gauges, the dashboard uses this forecast for times ahead, in the cards, the caution and alert limits and the workable windows, and falls back to the tide-only prediction where the forecast ends or is more than 30 hours old.</p>
+
+  <h3>Water level</h3>
+  <p>Three parts are added together: (1) each gauge's tide, carried to places between gauges using the shape of the tide in NOAA's STOFS-3D-Atlantic model; (2) that model's weather signal (surge and set-down), smoothed and scaled; (3) a correction from how the live gauges have been running over the last few hours to three days, fading with time ahead.</p>
+  <p>Tested by predicting the Elba Island gauge from its neighbors only: the error was about 0.1 ft (4 cm) for the present and 0.3–0.45 ft (9–14 cm) one to three days ahead, against 0.4–0.65 ft for tide tables with the latest gauge offset held. The shaded bands on the charts are 95% limits.</p>
+
+  <h3>Current</h3>
+  <p>Current is predicted based on a 13 hour window related to water levels based on previous observations, plus a term for river flow at Clyo. Between observations it is blended from the two nearest places with observations. Above 30 km from the sea entrance, current is given only where observations exist for training.</p>
+  <p>The places with a current record are NOAA's 2023 survey meters (depth-mean current along the channel, about six weeks each) and the three USGS velocity gauges (section mean).</p>
+  <div class="scroll"><table id="sites">
+    <thead><tr><th>Survey meter</th><th>NOAA station</th><th>Distance from sea entrance</th><th>Typical current error</th></tr></thead>
+    <tbody></tbody>
+  </table></div>
+  <p class="muted small">Typical error is root-mean-square, from fitting on the first 60% of each record and testing on the rest.</p>
+
+  <h3>Inputs</h3>
+  <div class="scroll">
+  <table>
+    <thead><tr><th>Input</th><th>Source</th><th>Use</th></tr></thead>
+    <tbody>
+      <tr><td>STOFS-3D-Atlantic</td><td class="wrap">NOAA's three-dimensional storm surge and tide forecast model; the 12:00 UTC run, posted about 19:45 UTC</td><td class="wrap">Shape of the tide along the channel and the weather signal</td></tr>
+      <tr><td>Water level gauges</td><td class="wrap">Fort Pulaski (NOAA), Elba Island, USACE Dock, Garden City, Port Wentworth (USGS)</td><td class="wrap">Tide at each gauge and the live correction</td></tr>
+      <tr><td>Current records</td><td class="wrap">14 NOAA 2023 survey meters; USGS velocity at Fort Pulaski, USACE Dock, Port Wentworth</td><td class="wrap">Fitting current to water level</td></tr>
+      <tr><td>River flow</td><td class="wrap">USGS discharge at Clyo</td><td class="wrap">Mean current: more river flow, more ebb</td></tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<section class="panel" id="limits">
+  <h2>Known limits</h2>
+  <p><b>Elba Island has no live current meter.</b> The current there is NOAA's tidal prediction from the 2023 survey, or the experimental channel forecast.</p>
+  <p><b>USGS current is a section mean,</b> not the current in the channel (see above).</p>
+  <p><b>Tide and tidal current predictions leave out weather and river flow.</b> After heavy rain upstream or in strong winds, expect real conditions to differ.</p>
+  <p><b>The channel forecast is untested seaward of Fort Pulaski,</b> where there is no water level gauge to compare to.</p>
+  <p><b>Transit distances are approximate,</b> measured along the channel line.</p>
+  <p><b>All data are provisional</b> and any feed can be late or down; the dashboard marks stale values and lists feeds that failed to load.</p>
+</section>
+
+</main>
+
+<script src="js/stations.js?v=20261119a"></script>
+<script src="js/config.js?v=20261119a"></script>
+<script src="js/tides.js?v=20261119a"></script>
+<script>
+// Fill the tables that come from the dashboard's own files, so this page cannot drift from what the dashboard uses.
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const row = cells => '<tr>' + cells.map(c => '<td>' + c + '</td>').join('') + '</tr>';
+const body = id => document.querySelector('#' + id + ' tbody');
+const month = s => new Date(s + 'T00:00:00Z').toLocaleDateString('en-US', { month: 'long', year: 'numeric', timeZone: 'UTC' });
+const span = fit => month(fit[0]) + ' – ' + month(fit[1]);
+const byId = Object.fromEntries(CONFIG.stations.map(s => [s.id, s]));
+
+// Skill of the harmonic predictions, from model_data/datums/*_prediction_skill.csv (hold-out October 2025 - September 2026).
+const TIDE_SKILL = { elba: [14, 0.53], usace: [15, 0.55], garden: [16, 0.53], ga25: [18, 0.53] };
+const CUR_SKILL = { pulaski: [0.33, 18], usace: [0.28, 27], ga25: [0.20, 26] };
+
+body('tidefit').innerHTML = Object.keys(TIDE_SKILL).filter(k => TIDES[k] && TIDES[k].f).map(k => row([
+  esc(byId[k].name), span(TIDES[k].fit), TIDES[k].f.length, TIDE_SKILL[k][0] + ' min', TIDE_SKILL[k][1].toFixed(2) + ' ft (' + Math.round(TIDE_SKILL[k][1] * 30.48) + ' cm)'
+])).join('');
+
+body('curfit').innerHTML = Object.keys(CUR_SKILL).filter(k => TIDES[k] && TIDES[k].cur).map(k => row([
+  esc(byId[k].name), span(TIDES[k].cur.fit), TIDES[k].cur.f.length, CUR_SKILL[k][0].toFixed(2) + ' kt (' + (CUR_SKILL[k][0] / 1.943844).toFixed(2) + ' m/s)', CUR_SKILL[k][1] + ' min'
+])).join('');
+
+body('datumtab').innerHTML = CONFIG.stations.filter(s => !s.buoy && !s.flowOnly).map(s => row(
+  s.coops ? [esc(s.name), 'MLLW', 'none', 'NOAA published datum for ' + s.coops]
+    : s.mllw != null ? [esc(s.name), 'MLLW', '+' + s.mllw.toFixed(2) + ' ft (' + (s.mllw * 0.3048).toFixed(2) + ' m)', 'Computed here from the USGS ' + s.usgs + ' record']
+      : [esc(s.name), 'NAVD88', 'none', 'No reliable tidal datum this far upriver']
+)).join('');
+
+fetch('data/forecast.json').then(r => r.json()).then(j => {
+  body('sites').innerHTML = j.points.filter(p => p.cur_basis === 'site').map(p => row([
+    esc(p.site_name), '<a href="https://tidesandcurrents.noaa.gov/stationhome.html?id=' + esc(p.site) + '">' + esc(p.site) + '</a>',
+    (p.km / 1.852).toFixed(1) + ' nm (' + p.km.toFixed(1) + ' km)', (p.cur_rmse * 1.943844).toFixed(2) + ' kt (' + p.cur_rmse.toFixed(2) + ' m/s)'
+  ])).join('');
+  document.getElementById('chanrun').textContent = 'Forecast now on the dashboard: NOAA model run ' + j.cycle.replace('Z', ' UTC') + ', river flow at Clyo ' +
+    Math.round(j.river_flow_m3s * 35.3147).toLocaleString('en-US') + ' cfs (' + Math.round(j.river_flow_m3s) + ' m³/s).';
+}).catch(() => { body('sites').innerHTML = '<tr><td colspan="4">The forecast file could not be loaded.</td></tr>'; });
+</script>
+</body>
+</html>
